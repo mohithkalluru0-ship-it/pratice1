@@ -1,0 +1,31 @@
+public class UniqueLetterHunt {
+    public static void main(String[] args) {
+        String[] testStrings = {"swiss", "aabbcc"};
+
+        for (String test : testStrings) {
+            char result = findFirstNonRepeatingChar(test);
+            if (result != '\0') {
+                System.out.printf("Input: \"%s\" -> First Non-Repeating Character: '%c'\n", test, result);
+            } else {
+                System.out.printf("Input: \"%s\" -> No Non-Repeating Character Found\n", test);
+            }
+        }
+    }
+
+    public static char findFirstNonRepeatingChar(String text) {
+        int[] frequencyMap = new int[256]; // Extended ASCII bounds
+
+        // Pass 1: Compute counts
+        for (int i = 0; i < text.length(); i++) {
+            frequencyMap[text.charAt(i)]++;
+        }
+
+        // Pass 2: Search layout order for structural uniqueness
+        for (int i = 0; i < text.length(); i++) {
+            if (frequencyMap[text.charAt(i)] == 1) {
+                return text.charAt(i); // Early structural exit
+            }
+        }
+        return '\0'; // Sentinel default value if none found
+    }
+}
