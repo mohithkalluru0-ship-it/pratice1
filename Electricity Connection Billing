@@ -1,0 +1,74 @@
+import java.util.*;
+
+abstract class Connection {
+    int units;
+
+    Connection(int units) {
+        this.units = units;
+    }
+
+    abstract double bill();
+}
+
+class Home extends Connection {
+    Home(int units) {
+        super(units);
+    }
+
+    double bill() {
+        if (units <= 100)
+            return units * 5;
+        return 100 * 5 + (units - 100) * 7;
+    }
+}
+
+class Shop extends Connection {
+    Shop(int units) {
+        super(units);
+    }
+
+    double bill() {
+        return units * 8 + 100;
+    }
+}
+
+class Factory extends Connection {
+    Factory(int units) {
+        super(units);
+    }
+
+    double bill() {
+        return Math.max(units * 6, 1000);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        Connection[] c = new Connection[n];
+        String[] type = new String[n];
+
+        double total = 0;
+
+        for (int i = 0; i < n; i++) {
+            type[i] = sc.next();
+            int units = sc.nextInt();
+
+            if (type[i].equals("HOME"))
+                c[i] = new Home(units);
+            else if (type[i].equals("SHOP"))
+                c[i] = new Shop(units);
+            else
+                c[i] = new Factory(units);
+        }
+
+        for (int i = 0; i < n; i++) {
+            System.out.printf("%s: %.2f%n", type[i], c[i].bill());
+            total += c[i].bill();
+        }
+
+        System.out.printf("Total: %.2f%n", total);
+    }
+}
