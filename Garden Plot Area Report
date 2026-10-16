@@ -1,0 +1,86 @@
+import java.util.*;
+
+abstract class Plot {
+    String owner;
+
+    Plot(String owner) {
+        this.owner = owner;
+    }
+
+    abstract double area();
+
+    void display() {
+        System.out.printf("%s (%s): %.2f%n",
+                owner, getClass().getSimpleName().toUpperCase(), area());
+    }
+}
+
+class Circle extends Plot {
+    double radius;
+
+    Circle(String owner, double radius) {
+        super(owner);
+        this.radius = radius;
+    }
+
+    double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle extends Plot {
+    double length, width;
+
+    Rectangle(String owner, double length, double width) {
+        super(owner);
+        this.length = length;
+        this.width = width;
+    }
+
+    double area() {
+        return length * width;
+    }
+}
+
+class Triangle extends Plot {
+    double base, height;
+
+    Triangle(String owner, double base, double height) {
+        super(owner);
+        this.base = base;
+        this.height = height;
+    }
+
+    double area() {
+        return 0.5 * base * height;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        Plot[] plots = new Plot[n];
+        double total = 0;
+
+        for (int i = 0; i < n; i++) {
+            String type = sc.next();
+
+            if (type.equals("CIRCLE")) {
+                plots[i] = new Circle(sc.next(), sc.nextDouble());
+            } else if (type.equals("RECTANGLE")) {
+                plots[i] = new Rectangle(sc.next(), sc.nextDouble(), sc.nextDouble());
+            } else {
+                plots[i] = new Triangle(sc.next(), sc.nextDouble(), sc.nextDouble());
+            }
+        }
+
+        for (Plot p : plots) {
+            p.display();
+            total += p.area();
+        }
+
+        System.out.printf("Total Area: %.2f%n", total);
+    }
+}
